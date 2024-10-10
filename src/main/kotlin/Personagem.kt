@@ -8,7 +8,7 @@ open class Personagem(
     var inteligencia: Int,
     var sabedoria: Int,
     var carisma: Int,
-    var modificador: Modificador,
+    var modificador: ModificadorPadrao,
     var bonusRacialStrategy: BonusRacialStrategy? = null
 ): PersonagemInterface{
 
