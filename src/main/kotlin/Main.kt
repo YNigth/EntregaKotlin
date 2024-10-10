@@ -1,331 +1,105 @@
 import java.util.Scanner
+
 fun main() {
-    val scanner = Scanner(System.`in`)
-    var nome: String
-    var personagem: Personagem
+    val entrada = Scanner(System.`in`)
+    val limitePontos = 27
+    var pontosRestantes = limitePontos
 
-    // Definindo o número máximo de pontos que o usuário pode distribuir
-    val maxPontos = 27
-    var pontosDisponiveis = maxPontos
+    println("Digite o nome do seu personagem:")
+    val nomePersonagem = entrada.next()
 
-    println("Informe o nome de seu personagem : ")
-    nome = scanner.next()
+    println("Selecione a raça do seu personagem:")
+    val opcoesRacas = listOf(
+        "Anão", "Elfo", "Humano", "Orc", "Anão da Montanha",
+        "Dracono", "Halfling", "Halfling Robusto", "Halfling Pés-Leves",
+        "Anão da Colina", "Tiefling", "Meio-Elfo", "Gnomo da Floresta",
+        "Alto Elfo", "Gnomo das Rochas", "Elfo da Floresta", "Gnomo", "Drow"
+    )
 
-    // Input da raça
-    println("Escolha a raça do personagem:")
-    println("1. Anão")
-    println("2. Elfo")
-    println("3. Humano")
-    println("4. Orc")
-    println("5. Anão da Montanha")
-    println("6. Dracono")
-    println("7. Halfling")
-    println("8. Halfling Robusto")
-    println("9. Halfling Pes-Leves")
-    println("10. Anão da Colina")
-    println("11. Tiefling")
-    println("12. Meio-Elfo")
-    println("13. Gnomo Da Floresta")
-    println("14. Alto Elfo")
-    println("15. Gnomo Das Rochas")
-    println("16. Elfo Da Floresta")
-    println("17. Gnomo")
-    println("18. Drow")
+    for (i in opcoesRacas.indices) {
+        println("${i + 1}. ${opcoesRacas[i]}")
+    }
 
-    personagem = when (readLine()?.toIntOrNull()) {
-        1 -> Anao(nome)
-        2 -> Elfo(nome)
-        3 -> Humano(nome)
-        4 -> Orc(nome)
-        5 -> AnaoDaMontanha(nome)
-        6 -> Dracono(nome)
-        7 -> Halfling(nome)
-        8 -> HalflingRobusto(nome)
-        9 -> HalflingPesLeves(nome)
-        10 -> AnaoDaColina(nome)
-        11 -> Tiefling(nome)
-        12 -> MeioElfo(nome)
-        13 -> GnomoDaFloresta(nome)
-        14 -> AltoElfo(nome)
-        15 -> GnomoDasRochas(nome)
-        16 -> ElfoDaFloresta(nome)
-        17 -> Gnomo(nome)
-        18 -> Drow(nome)
+    val racaEscolhida = when (readLine()?.toIntOrNull()) {
+        1 -> Anao(nomePersonagem)
+        2 -> Elfo(nomePersonagem)
+        3 -> Humano(nomePersonagem)
+        4 -> Orc(nomePersonagem)
+        5 -> AnaoDaMontanha(nomePersonagem)
+        6 -> Dracono(nomePersonagem)
+        7 -> Halfling(nomePersonagem)
+        8 -> HalflingRobusto(nomePersonagem)
+        9 -> HalflingPesLeves(nomePersonagem)
+        10 -> AnaoDaColina(nomePersonagem)
+        11 -> Tiefling(nomePersonagem)
+        12 -> MeioElfo(nomePersonagem)
+        13 -> GnomoDaFloresta(nomePersonagem)
+        14 -> AltoElfo(nomePersonagem)
+        15 -> GnomoDasRochas(nomePersonagem)
+        16 -> ElfoDaFloresta(nomePersonagem)
+        17 -> Gnomo(nomePersonagem)
+        18 -> Drow(nomePersonagem)
         else -> {
-            println("Raça inválida, atribuindo Anão por padrão.")
-            Anao(nome)
+            println("Raça inválida, definindo como Anão por padrão.")
+            Anao(nomePersonagem)
         }
     }
 
-    while (pontosDisponiveis > 0) {
-        println("Você tem $pontosDisponiveis pontos para distribuir.")
-        println("Tabela de Custo de Pontos de Habilidade:")
-        println("Valor | Custo")
-        println("--------------")
-        println("  8   |   0")
-        println("  9   |   1")
-        println(" 10   |   2")
-        println(" 11   |   3")
-        println(" 12   |   4")
-        println(" 13   |   5")
-        println(" 14   |   7")
-        println(" 15   |   9")
-        println("Escolha um atributo para adicionar pontos:")
-        println("1. Força")
-        println("2. Destreza")
-        println("3. Constituição")
-        println("4. Inteligência")
-        println("5. Sabedoria")
-        println("6. Carisma")
+    while (pontosRestantes > 0) {
+        println("Você tem $pontosRestantes pontos restantes.")
+        println("Tabela de Custo de Pontos:")
+        val tabelaCusto = mapOf(8 to 0, 9 to 1, 10 to 2, 11 to 3, 12 to 4, 13 to 5, 14 to 7, 15 to 9)
 
-        when (readLine()?.toIntOrNull()) {
-            1 -> {
-                println("Quantos pontos de 8 a 15 deseja ter em Força?")
-                val pontos = scanner.nextInt()
+        println("Selecione o atributo para alocar pontos:")
+        val atributos = listOf("Força", "Destreza", "Constituição", "Inteligência", "Sabedoria", "Carisma")
 
-                if (pontos < 8 || pontos > 15) {
-                    println("Digite um número entre 8 e 15")
-                } else {
-                    val custo = when (pontos) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-                    val custoAnterior = when (personagem.forca) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
+        for (i in atributos.indices) {
+            println("${i + 1}. ${atributos[i]}")
+        }
 
-                    if (pontosDisponiveis + custoAnterior >= custo) {
-                        pontosDisponiveis = pontosDisponiveis + custoAnterior - custo
-                        personagem.forca = pontos
-                    } else {
-                        println("Você não tem pontos suficientes.")
-                    }
-                }
+        val escolhaAtributo = readLine()?.toIntOrNull()
+        if (escolhaAtributo == null || escolhaAtributo !in 1..atributos.size) {
+            println("Opção inválida. Tente novamente.")
+            continue
+        }
 
+        println("Quantos pontos deseja atribuir ao atributo ${atributos[escolhaAtributo - 1]} (8-15)?")
+        val pontosEscolhidos = readLine()?.toIntOrNull()
+
+        if (pontosEscolhidos == null || pontosEscolhidos !in 8..15) {
+            println("Valor inválido, insira um número entre 8 e 15.")
+            continue
+        }
+
+        val custoNovo = tabelaCusto[pontosEscolhidos] ?: 0
+        val atributoAtual = when (escolhaAtributo) {
+            1 -> racaEscolhida.forca
+            2 -> racaEscolhida.destreza
+            3 -> racaEscolhida.constituicao
+            4 -> racaEscolhida.inteligencia
+            5 -> racaEscolhida.sabedoria
+            6 -> racaEscolhida.carisma
+            else -> 8
+        }
+        val custoAtual = tabelaCusto[atributoAtual] ?: 0
+
+        if (pontosRestantes + custoAtual >= custoNovo) {
+            pontosRestantes = pontosRestantes + custoAtual - custoNovo
+            when (escolhaAtributo) {
+                1 -> racaEscolhida.forca = pontosEscolhidos
+                2 -> racaEscolhida.destreza = pontosEscolhidos
+                3 -> racaEscolhida.constituicao = pontosEscolhidos
+                4 -> racaEscolhida.inteligencia = pontosEscolhidos
+                5 -> racaEscolhida.sabedoria = pontosEscolhidos
+                6 -> racaEscolhida.carisma = pontosEscolhidos
             }
-
-            2 -> {
-                println("Quantos pontos de 8 a 15 deseja ter em Destreza?")
-                val pontos = scanner.nextInt()
-
-                if (pontos < 8 || pontos > 15) {
-                    println("Digite um número entre 8 e 15")
-                } else {
-                    val custo = when (pontos) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-                    val custoAnterior = when (personagem.destreza) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-
-                    if (pontosDisponiveis + custoAnterior >= custo) {
-                        pontosDisponiveis = pontosDisponiveis + custoAnterior - custo
-                        personagem.destreza = pontos
-                    } else {
-                        println("Você não tem pontos suficientes.")
-                    }
-                }
-
-            }
-            3 -> {
-                println("Quantos pontos de 8 a 15 deseja ter em Constituição?")
-                val pontos = scanner.nextInt()
-
-                if (pontos < 8 || pontos > 15) {
-                    println("Digite um número entre 8 e 15")
-                } else {
-                    val custo = when (pontos) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-                    val custoAnterior = when (personagem.constituicao) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-
-                    if (pontosDisponiveis + custoAnterior >= custo) {
-                        pontosDisponiveis = pontosDisponiveis + custoAnterior - custo
-                        personagem.constituicao = pontos
-                    } else {
-                        println("Você não tem pontos suficientes.")
-                    }
-                }
-
-            }
-            4 -> {
-                println("Quantos pontos de 8 a 15 deseja ter em Inteligencia?")
-                val pontos = scanner.nextInt()
-
-                if (pontos < 8 || pontos > 15) {
-                    println("Digite um número entre 8 e 15")
-                } else {
-                    val custo = when (pontos) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-                    val custoAnterior = when (personagem.inteligencia) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-
-                    if (pontosDisponiveis + custoAnterior >= custo) {
-                        pontosDisponiveis = pontosDisponiveis + custoAnterior - custo
-                        personagem.inteligencia = pontos
-                    } else {
-                        println("Você não tem pontos suficientes.")
-                    }
-                }
-
-            }
-            5 -> {
-                println("Quantos pontos de 8 a 15 deseja ter em Sabedoria?")
-                val pontos = scanner.nextInt()
-
-                if (pontos < 8 || pontos > 15) {
-                    println("Digite um número entre 8 e 15")
-                } else {
-                    val custo = when (pontos) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-                    val custoAnterior = when (personagem.sabedoria) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-
-                    if (pontosDisponiveis + custoAnterior >= custo) {
-                        pontosDisponiveis = pontosDisponiveis + custoAnterior - custo
-                        personagem.sabedoria = pontos
-                    } else {
-                        println("Você não tem pontos suficientes.")
-                    }
-                }
-
-            }
-            6 -> {
-                println("Quantos pontos de 8 a 15 deseja ter em Carisma?")
-                val pontos = scanner.nextInt()
-
-                if (pontos < 8 || pontos > 15) {
-                    println("Digite um número entre 8 e 15")
-                } else {
-                    val custo = when (pontos) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-                    val custoAnterior = when (personagem.carisma) {
-                        8 -> 0
-                        9 -> 1
-                        10 -> 2
-                        11 -> 3
-                        12 -> 4
-                        13 -> 5
-                        14 -> 7
-                        15 -> 9
-                        else -> 0
-                    }
-
-                    if (pontosDisponiveis + custoAnterior >= custo) {
-                        pontosDisponiveis = pontosDisponiveis + custoAnterior - custo
-                        personagem.carisma = pontos
-                    } else {
-                        println("Você não tem pontos suficientes.")
-                    }
-                }
-
-            }
-            else -> {
-                println("Opção inválida.")
-            }
+        } else {
+            println("Pontos insuficientes para essa alocação.")
         }
     }
 
-    println("Todos os pontos foram distribuídos!")
-
-    personagem.ModFinal = personagem.calcularMod(personagem.constituicao) + 10
-    personagem.aplicarBonusRacial()
-    personagem.mostrar()
+    println("Distribuição de pontos concluída!")
+    racaEscolhida.ModFinal = racaEscolhida.calcularMod(racaEscolhida.constituicao) + 11
+    racaEscolhida.aplicarBonusRacial()
+    racaEscolhida.mostrar()
 }
-
-
-
